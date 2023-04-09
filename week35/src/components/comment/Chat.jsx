@@ -20,9 +20,18 @@ function Chat() {
       highlighted: true, // добавляем свойство highlighted в новое сообщение
     };
 
-    setMessages(prevMessages => [newMessage, ...prevMessages]);
-    setInputText('');
-  }
+     setMessages(prevMessages => {
+        const updatedMessages = prevMessages.map(message => {
+          if (message.highlighted) {
+            return { ...message, highlighted: false };
+          }
+          return message;
+        });
+        return [newMessage, ...updatedMessages];
+      });
+  
+      setInputText('');
+    }
 
   function handleKeyDown(event) { // обработчик нажатия на клавишу Enter
     if (event.key === 'Enter') {
@@ -36,7 +45,7 @@ function Chat() {
         {messages.map(message => (
           <p className='conteiner'
             key={message.id}
-            style={{ backgroundColor: message.highlighted ? 'lightblue' : '' }}
+            style={{ backgroundColor: message.highlighted ? 'lightblue' : 'transparent' }}
           >
             {message.text}
           </p>
